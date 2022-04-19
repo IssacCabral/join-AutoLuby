@@ -1,0 +1,12 @@
+O sequelize-cli é uma ferramenta de linha de comando
+para fazer uma série de atividades ligadas a banco de dados
+utilizando o sequelize
+
+npm i sequelize-cli // instala o pacote sequelize-cli
+npx sequelize-cli init // inicializa um projeto sequelize-cli no projeto
+npx sequelize-cli db:create // criar o banco pelo sequelize-cli
+npx sequelize-cli migration:generate --name create-categories // criar uma migration
+npx sequelize-cli db:migrate // olha todas as migrations do meu projeto que não foram executadas ainda e executa
+npx sequelize-cli db:migrate:undo // desfazer a migrations
+
+npm run build // para transpilar
