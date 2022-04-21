@@ -4,7 +4,7 @@ import User from './User'
 import Vehicle from './Vehicle'
 
 const Sale = connection.define('sales', {
-    id: {
+      id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
@@ -17,10 +17,6 @@ const Sale = connection.define('sales', {
         allowNull: false
       },
       vehicleStatus: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      userName: {
         type: Sequelize.STRING,
         allowNull: false
       },

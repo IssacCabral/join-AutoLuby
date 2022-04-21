@@ -27,8 +27,8 @@ class SalesService{
     
     /**
      * verifico se o veículo é reservado, se ele for reservado, busco na tabela de reservas
-     * se o vendedor que o reservou existe. se o vendedor tiver sido demitido(employeeId = null), posso permitir
-     * a venda para outro vendedor. Logo, verifico se o employeeId passado aqui nesse método
+     * se o vendedor que o reservou existe. se o vendedor tiver sido demitido(userId = null), posso permitir
+     * a venda para outro vendedor. Logo, verifico se o userId passado aqui nesse método
      * existe. Se existir, realizo a venda. Se não existir, retorna erro de pessoa não encontrada.
      * OK, agora se o vendedor que o reservou existir, verifico se o id passado nesse método bate
      * com o id da reserva do veículo e realizo a venda. se não bater retorno erro informando: 
@@ -42,37 +42,35 @@ class SalesService{
 
         if(resultSearch.vehicleStatus === "reserved"){
             const reservation: any = await Reservation.findOne({include: [{model: User}], where: {vehicleId}})
-
-            if(reservation.userId === null) {
+            
+            if(reservation.userId === null) { // permitindo a venda para outro user
                 if(resultSearch.userSearch === null){
                     return {error: "usuário não encontrado"}
                 }else{
-                    const userName = resultSearch.userSearch.name
                     const price = resultSearch.vehicleSearch.sale_price
-                    const sale = await Sale.create({userId, vehicleId, vehicleStatus: "sold", userName, price})
+                    const sale = await Sale.create({userId, vehicleId, vehicleStatus: "sold", price})
                     await Vehicle.update({status: "sold"}, {where: {id: vehicleId}})
-
-                    await Reservation.update({vehicleStatus: "sold"}, {where: {vehicleId}})
+                    
+                    await Reservation.destroy({where: {vehicleId}})
                     return {data: sale}
                 }
-            }else{
+            }else{ // vendendo para quem o reservou
                 if(userId !== reservation.userId){
                     return {error: "apenas o usuário que o reservou poderá vender esse veículo"}
                 }
-                const userName = resultSearch.userSearch.name
+
                 const price = resultSearch.vehicleSearch.sale_price
-                const sale = await Sale.create({userId, vehicleId, vehicleStatus: "sold", userName, price})
+                const sale = await Sale.create({userId, vehicleId, vehicleStatus: "sold", price})
                 await Vehicle.update({status: "sold"}, {where: {id: vehicleId}})
-                await Reservation.update({vehicleStatus: "sold"}, {where: {vehicleId}})
+                await Reservation.destroy({where: {vehicleId}})
                 return {data: sale}
             }
         }
-
-        const userName = resultSearch.userSearch.dataValues.name
+        
+        // vendendo um carro que está disponível(available)
         const price = resultSearch.vehicleSearch.sale_price
-        const sale = await Sale.create({userId, vehicleId, vehicleStatus: "sold", userName, price})
+        const sale = await Sale.create({userId, vehicleId, vehicleStatus: "sold", price})
         await Vehicle.update({status: "sold"}, {where: {id: vehicleId}})
-        await Reservation.update({vehicleStatus: "sold"}, {where: {vehicleId}})
 
         return {data: sale}
     }   

@@ -39,10 +39,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      userName: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       price: {
         type: Sequelize.DOUBLE,
         allowNull: false

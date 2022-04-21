@@ -117,18 +117,19 @@ class UsersService{
     }
 
     async update(id: number, {name, email, biography, currentlyPassword, newPassword, value}: IUpdateUserDTO){
-        // const userSearch: any = await User.findByPk(id)
+        const userSearch: any = await User.findByPk(id)
 
-        // if(userSearch === null) return {error: "Usuário não encontrado pelo id"}
+        if(userSearch === null) return {error: "Usuário não encontrado pelo id"}
 
-        // const isCorrect = bcrypt.compareSync(currentlyPassword, userSearch.password)
+        const isCorrect = bcrypt.compareSync(currentlyPassword, userSearch.password)
 
-        // if(!isCorrect) return {error: "A senha atual não corresponde com a senha passada no campo"} 
+        if(!isCorrect) return {error: "A senha atual não corresponde com a senha passada no campo"} 
 
-        // const salt = bcrypt.genSaltSync(10)
-        // const hash = bcrypt.hashSync(newPassword, salt)
+        const salt = bcrypt.genSaltSync(10)
+        const hash = bcrypt.hashSync(newPassword, salt)
 
-        // await User.update({name, email, biography, password: hash, value}, {where: {id}})
+        await User.update({name, email, biography, password: hash, value}, {where: {id}})
+        return {data: "usuário atualizado com sucesso"}
     }
 
     async destroy(id: number){

@@ -24,7 +24,7 @@ class ReservationsService{
 
         await Vehicle.update({status: "reserved"}, {where: {id: vehicleId}})
 
-        const reservation = await Reservation.create({userId, vehicleId, vehicleStatus: "reserved", userName, reservationValue})
+        const reservation = await Reservation.create({userId, vehicleId, vehicleStatus: "reserved", reservationValue})
         return {data: reservation}
     }
 

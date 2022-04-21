@@ -27,7 +27,7 @@ class UsersController{
                 ['id', 'DESC']
             ],
             attributes: {
-                exclude: ['id', 'password', 'avatar', 'createdAt', 'updatedAt']
+                exclude: ['password', 'avatar', 'createdAt', 'updatedAt']
             }
         })
 
@@ -65,13 +65,15 @@ class UsersController{
     }
 
     async update(request: Request, response: Response){
-        // const id = parseInt(request.params.id)
-        // const {name, email, biography, currentlyPassword, newPassword, value} = request.body
-        // const data = await UsersService.
+        const id = parseInt(request.params.id)
+        const {name, email, biography, currentlyPassword, newPassword, value} = request.body
+        const data = await UsersService.findUserByPk(id)
 
-        // const updateResult = await UsersService.update(id, {name, email, biography, currentlyPassword, newPassword, value})
+        if(data["error"]) return response.status(404).json(data.error)
 
-        // return updateResult['error'] ? response.status(400).json(updateResult.error) : 
+        const updateResult = await UsersService.update(id, {name, email, biography, currentlyPassword, newPassword, value})
+
+        return updateResult['error'] ? response.status(400).json(updateResult.error) : response.status(200).json(updateResult.data)
     }
 
     async destroy(request: Request, response: Response){

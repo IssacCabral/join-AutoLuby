@@ -38,7 +38,7 @@ Descrição: sinta-se à vontade para realizar essa tarefa e use sua criatividad
 
 Descrição: deve ser possível fazer a autenticação no sistema e dividir as rotas públicas das privadas
 
-##### RF04 - Crud de Veículo
+##### RF04 - Crud de Veículo (OK)
 
 - **Adquirir veículo:**
 
@@ -56,7 +56,7 @@ Descrição: Listagem de um único veículo.
 
 Descrição: Deve ser possível remover um veículo.
 
-##### RF05 - Filtrar veículos pelo status (OPCIONAL)
+##### RF05 - Filtrar veículos pelo status (OPCIONAL) (OK)
 
 Descrição: você pode filtrar veículos vendidos ou disponíveis
 
@@ -74,13 +74,13 @@ Descrição: todas as datas deverão estar no formato DD/MM/yyyy
 
 #### REQUISITOS NÃO FUNCIONAIS
 
-**RNF01 - A aplicação deverá ser feita utilizando Express com o (Sequelize) ou AdonisJs.**
+**RNF01 - A aplicação deverá ser feita utilizando Express com o (Sequelize) ou AdonisJs.** (OK)
 
-**RNF02 - Utilização de Migrations**
+**RNF02 - Utilização de Migrations** (OK)
 
-**RNF03 - Utilização de Models**
+**RNF03 - Utilização de Models** (OK)
 
-**RNF04 - Gostaríamos de ver a utilização de typescript (OPCIONAL)**
+**RNF04 - Gostaríamos de ver a utilização de typescript (OPCIONAL)** (OK)
 
 **RNF05 - Gostaríamos que os campos necessários para os endpoints fossem validados na requisição. (OPCIONAL)**
 

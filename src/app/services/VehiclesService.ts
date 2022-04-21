@@ -31,6 +31,7 @@ class VehiclesService{
         if(status !== "available" && status !== "sold" && status !== "reserved") return {error: "Status inválido"}
 
         const vehicles = await Vehicle.findAll({where: {status}})
+        if(vehicles.length === 0) return {error: "Não há carros para esse status"}
         return {data: vehicles}
     }
 
