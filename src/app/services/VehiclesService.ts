@@ -1,6 +1,6 @@
 import Vehicle from "../models/Vehicle";
-import {IVehicleDTO} from './DTO/CreateVehicleDTO'
-import {IUpdateVehicleDTO} from './DTO/UpdateVehicleDTO'
+import {IVehicleDTO} from './DTO/VehicleDTO'
+import {IUpdateVehicleDTO} from './DTO/VehicleDTO'
 
 class VehiclesService{
     async create({brand, model, year, km, color, chassis, sale_price, cost_price}: IVehicleDTO){

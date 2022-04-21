@@ -12,6 +12,6 @@ vehiclesRouter.get('/vehicle/:id', VehiclesController.findByPk) // ok
 vehiclesRouter.get('/vehicles/status/:status', VehiclesController.findByStatus) // ok
 vehiclesRouter.get('/vehicles/chassis/:chassisNumber', VehiclesController.findByChassis) // ok
 vehiclesRouter.put('/vehicle/:id', VehiclesController.update) // ok
-vehiclesRouter.delete('/vehicle/:id', VehiclesController.destroy)
+vehiclesRouter.delete('/vehicle/:id', VehiclesController.destroy) // ok
 
 export default vehiclesRouter

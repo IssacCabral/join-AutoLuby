@@ -8,3 +8,9 @@ export interface IVehicleDTO{
     sale_price: number,
     cost_price: number
 }
+
+export interface IUpdateVehicleDTO{
+    km: string,
+    color: string,
+    sale_price: number
+}
