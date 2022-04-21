@@ -1,42 +1,49 @@
 import Sequelize from 'sequelize'
 import connection from '../../config/db_connection'
 
-const User = connection.define('users', {
+const Vehicle = connection.define('vehicles', {
     id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
     },
-    email: {
+    status: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        defaultValue: "available",
+        allowNull: false
     },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    name: {
+    brand: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    cpf: {
+    model: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-    },
-    biography: {
-        type: Sequelize.TEXT,
         allowNull: false
     },
-    value: {
+    year: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    km: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    color: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    chassis: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    sale_price: {
         type: Sequelize.DOUBLE,
         allowNull: false
     },
-    avatar: {
-        type: Sequelize.STRING,
-        allowNull: true
+    cost_price: {
+        type: Sequelize.DOUBLE,
+        allowNull: false
     },
     createdAt: {
         type: Sequelize.DATE,
@@ -50,12 +57,4 @@ const User = connection.define('users', {
     }
 })
 
-// relacionamento entre users e roles tabela users_roles
-// User.belongsToMany(Role, {through: UserRole})
-// Role.belongsToMany(User, {through: UserRole})
-
-// // relacionamento entre users e permissions tabela users_permissions
-// User.belongsToMany(Permission, {through: UserPermition})
-// Permission.belongsToMany(User, {through: UserPermition})
-
-export default User
+export default Vehicle

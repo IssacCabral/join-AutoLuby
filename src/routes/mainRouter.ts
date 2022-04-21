@@ -1,12 +1,6 @@
-import { response, Router } from "express";
-import employeeRouter from "./EmployeeRoutes";
-import permissionRouter from "./PermissionRoutes";
-import roleRouter from "./RoleRoutes";
-
-import Permission from "../app/models/Permission";
-import Role from "../app/models/Role";
-import Permission_Role from "../app/models/Permission_Role";
-
+import { Router } from "express";
+import tokenRouter from "./TokenRoutes";
+import vehiclesRouter from "./VehiclesRoutes";
 const mainRouter = Router()
 
 mainRouter.get('/', (request, response) => {
@@ -14,6 +8,5 @@ mainRouter.get('/', (request, response) => {
 })
 
 export default mainRouter
-                    .use(employeeRouter)
-                    .use(permissionRouter)
-                    .use(roleRouter)
+                    .use(tokenRouter)
+                    .use(vehiclesRouter)

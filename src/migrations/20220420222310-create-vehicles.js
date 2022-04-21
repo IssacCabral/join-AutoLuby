@@ -1,43 +1,50 @@
 'use strict';
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+  async up (queryInterface, Sequelize) {
+    await queryInterface.createTable('vehicles', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
       },
-      email: {
+      status: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        defaultValue: "available",
+        allowNull: false
       },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      name: {
+      brand: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      cpf: {
+      model: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      biography: {
-        type: Sequelize.TEXT,
         allowNull: false
       },
-      value: {
+      year: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      km: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      color: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      chassis: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      sale_price: {
         type: Sequelize.DOUBLE,
         allowNull: false
       },
-      avatar: {
-        type: Sequelize.STRING,
-        allowNull: true
+      cost_price: {
+        type: Sequelize.DOUBLE,
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -53,7 +60,7 @@ module.exports = {
 
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable('vehicles');
   }
 };
