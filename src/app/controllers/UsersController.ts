@@ -58,7 +58,10 @@ class UsersController{
     }
 
     async findByPk(request: Request, response: Response){
+        const id = parseInt(request.params.id)
+        const data = await UsersService.findUserByPk(id)
 
+        data["error"] ? response.status(404).json(data.error) : response.status(200).json(data.data)
     }
 
     async update(request: Request, response: Response){

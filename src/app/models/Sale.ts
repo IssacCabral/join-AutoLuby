@@ -33,7 +33,7 @@ const Sale = connection.define('sales', {
 // 1 venda é feita por um usuário 1 x 1 --> belongsTo()
 Sale.belongsTo(User, {foreignKey: 'userId'}) // adds userId to Sale
 // 1 usuário realiza várias vendas 1 x n --> hasMany()
-User.hasMany(Sale, {foreignKey: 'employeeId'})
+User.hasMany(Sale, {foreignKey: 'userId'})
 
 // 1 venda contém 1 veículo 1 x 1 --> belongsTo()
 Sale.belongsTo(Vehicle, {foreignKey: 'vehicleId'}) // adds vehicleId to Sale

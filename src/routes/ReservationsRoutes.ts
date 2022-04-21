@@ -5,6 +5,6 @@ const reservationsRouter = Router()
 
 reservationsRouter.post('/reservation', ReservationsController.create) // ok
 reservationsRouter.get('/reservations', ReservationsController.findAll) // ok
-reservationsRouter.get('/reservation/:id', ReservationsController.findByPk)
+reservationsRouter.get('/reservation/:id', ReservationsController.findByPk) // ok
 
 export default reservationsRouter

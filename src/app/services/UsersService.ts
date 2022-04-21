@@ -1,6 +1,9 @@
 import User from "../models/User"
 import {IUserDTO, IUpdateUserDTO} from './DTO/UserDTO'
 import bcrypt from 'bcryptjs'
+import Sale from "../models/Sale"
+import Reservation from "../models/Reservation"
+import Vehicle from "../models/Vehicle"
 
 class UsersService{
     async create({email, password, name, cpf, biography, value, avatar}: IUserDTO){
@@ -20,6 +23,97 @@ class UsersService{
 
         const user = await User.create({email, password: hash, name, cpf, biography, value, avatar})
         return {data: user}
+    }
+
+
+    private async auxFindUserByPk(id: number, {userSales, userReservations}: any){
+        // vendedores que não fizeram nem vendas e nem reservas
+        if(userReservations.length == 0 && userSales.length == 0){
+            const userSearch = await User.findAll({
+                include: [
+                    {model: Sale}, {model: Reservation}
+                ], 
+                attributes:{exclude: ['password', 'createdAt', 'updatedAt']} , where: {id}
+            }) 
+            return {data: userSearch}
+        }
+        // vendedores que fizeram apenas reservas ou vendedores que fizeram apenas vendas 
+        if(userReservations.length > 0 && userSales.length == 0 || userReservations.length == 0 && userSales.length > 0){
+            const userSearch = await User.findAll({
+                include: [
+                    {model: Sale}, {model: Reservation}
+                ],
+                attributes: {exclude: ['password', 'createdAt', 'updatedAt']}, where: {id}
+            })
+            return {data: userSearch}
+        }
+        // vendedores que fizeram vendas e reservas e não possuem veículos com status reservado na listagem de reservas
+        const countReservedStatus = await Reservation.findAndCountAll({where: {userId: id, vehicleStatus: "reserved"}})
+        if(countReservedStatus.count == 0){
+            const userSearch: any = await User.findAll({
+                include: [
+                    {model: Sale, attributes: {exclude: [
+                        'id', 'saleDate', 'userName', 'price', 'userId', 'vehicleId'
+                    ]}, 
+                    include: [{model: Vehicle, attributes: {exclude: [
+                        'id', 'cost_price', 'createdAt', 'updatedAt', 'status'
+                    ]}}]
+                },
+                    {model: Reservation, attributes: {exclude: [
+                        'id', 'reservationDate', 'userName', 'userId', 'vehicleId'
+                    ]}, 
+                    include: [{model: Vehicle, attributes: {exclude: [
+                        'id', 'cost_price', 'createdAt', 'updatedAt', 'status'
+                    ]}}],
+                    where: {
+                        vehicleStatus: "sold"
+                    }}
+                ], 
+                attributes: {
+                    exclude: ['password', 'createdAt', 'updatedAt']
+                }, where: {id}
+            })     
+            console.log('cheguei aqui')
+            return {data: userSearch}  
+        }
+        // vendedores que fizeram vendas e reservas e possuem veículos com status reservado na listagem de reservas
+        const userSearch: any = await User.findAll({
+            include: [
+                {model: Sale, attributes: {exclude: [
+                    'id', 'saleDate', 'userName', 'price', 'userId', 'vehicleId'
+                ]}, 
+                include: [{model: Vehicle, attributes: {exclude: [
+                    'id', 'cost_price', 'createdAt', 'updatedAt', 'status'
+                ]}}]
+            },
+                {model: Reservation, attributes: {exclude: [
+                    'id', 'reservationDate', 'userName', 'userId', 'vehicleId'
+                ]}, 
+                include: [{model: Vehicle, attributes: {exclude: [
+                    'id', 'cost_price', 'createdAt', 'updatedAt', 'status'
+                ]}}],
+                where: {
+                    vehicleStatus: "reserved"
+                }}
+            ], 
+            attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt']
+            }, where: {id}
+        })        
+        return {data: userSearch}
+    }
+
+    // Deve ser possível visualizar um único funcionário e as vendas/reservas de veículos deste.
+    async findUserByPk(id: number){
+        const user = await User.findByPk(id)
+
+        if(user === null) return {error: "usuário não encontrado pelo id"}
+
+        const userSales = await Sale.findAll({where: {userId: id}})
+        const userReservations = await Reservation.findAll({where: {userId: id}})
+        
+        const result = await this.auxFindUserByPk(id, {userSales, userReservations})
+        return {data: result.data}
     }
 
     async update(id: number, {name, email, biography, currentlyPassword, newPassword, value}: IUpdateUserDTO){
