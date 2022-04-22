@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize'
 import connection from '../../config/db_connection'
+import Role from './UsersAccessControl/Role'
 
 const User = connection.define('users', {
     id: {
@@ -57,5 +58,11 @@ const User = connection.define('users', {
 // // relacionamento entre users e permissions tabela users_permissions
 // User.belongsToMany(Permission, {through: UserPermition})
 // Permission.belongsToMany(User, {through: UserPermition})
+
+// 1 usuário tem uma role 1 x 1 --> belongsTo()
+User.belongsTo(Role, {foreignKey: 'roleId'}) // adds roleId to User
+// 1 role está em vários usuários 1 x n --> hasMany()
+Role.hasMany(User, {foreignKey: 'roleId'})
+
 
 export default User

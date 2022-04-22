@@ -2,7 +2,7 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('roles', {
+    await queryInterface.createTable('permissions', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -17,11 +17,21 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
+        field: 'createdAt'
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
+        field: 'updatedAt'
       }
     });
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('roles');
+    await queryInterface.dropTable('permissions');
   }
 };
