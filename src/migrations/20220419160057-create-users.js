@@ -9,6 +9,16 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
+      roleId: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'roles',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+      },
       email: {
         type: Sequelize.STRING,
         allowNull: false,

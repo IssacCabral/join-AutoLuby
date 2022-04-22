@@ -8,7 +8,7 @@
 
 ### **REQUISITOS FUNCIONAIS**
 
-##### **RF01 -** CRUD de funcionários
+##### **RF01 -** CRUD de funcionários (OK)
 
 - **Cadastro:**
 
@@ -60,11 +60,11 @@ Descrição: Deve ser possível remover um veículo.
 
 Descrição: você pode filtrar veículos vendidos ou disponíveis
 
-##### RF06 - Vender veículo
+##### RF06 - Vender veículo (OK)
 
 Descrição: ao realizar esta ação, informações como: data, status do veículo, valor da venda e quem vendeu, devem ser armazenadas no banco.
 
-##### RF07 - Reservar veículo
+##### RF07 - Reservar veículo (OK)
 
 Descrição: ao realizar esta ação, informações como: data, valor da reserva e quem vendeu, devem ser armazenadas no banco.
 

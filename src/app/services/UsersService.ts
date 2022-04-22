@@ -117,11 +117,13 @@ class UsersService{
     }
 
     async update(id: number, {name, email, biography, currentlyPassword, newPassword, value}: IUpdateUserDTO){
+        const emailExists = await User.findOne({where: {email}})
+
+        if(emailExists) return {error: "O email já existe no banco"}
+
         const userSearch: any = await User.findByPk(id)
-
-        if(userSearch === null) return {error: "Usuário não encontrado pelo id"}
-
         const isCorrect = bcrypt.compareSync(currentlyPassword, userSearch.password)
+        
 
         if(!isCorrect) return {error: "A senha atual não corresponde com a senha passada no campo"} 
 
