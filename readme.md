@@ -395,7 +395,7 @@ http://localhost:3000/vehicles?page=1&limit=5
 
 ## Cadastrando Reservas
 
-- Para fins de teste, vamos nos autenticar com o employee de name 'Charles Chaplin'
+- Para fins de teste, vamos nos autenticar com o employee de name 'Aristóteles Ferreira'
 
 ```json
 endpoints: [
@@ -464,9 +464,6 @@ endpoints: [
 
 - Perceba que o veículo que reservamos agora possui status "reserved"
 
-```
-
-```
 
 ``` json
 {
