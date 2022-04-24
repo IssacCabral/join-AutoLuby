@@ -9,4 +9,7 @@ npx sequelize-cli migration:generate --name create-categories // criar uma migra
 npx sequelize-cli db:migrate // olha todas as migrations do meu projeto que não foram executadas ainda e executa
 npx sequelize-cli db:migrate:undo // desfazer a migrations
 
+npx sequelize-cli seed:create --name createUsers //Criar seeders
+npx sequelize-cli db:seed:all //Roda todos os seeders 
+
 npm run build // para transpilar

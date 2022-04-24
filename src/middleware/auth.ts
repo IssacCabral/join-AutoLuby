@@ -21,7 +21,7 @@ export default async function auth(request: Request, response: Response, next: N
     
     jwt.verify(token, process.env.SECRET!, (error, data) => {
         if(error) return response.status(401).json({error: "Token Inválido"})
-        console.log(data)
+        request.user = data as any
         next()
     })
 

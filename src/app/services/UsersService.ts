@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import Sale from "../models/Sale"
 import Reservation from "../models/Reservation"
 import Vehicle from "../models/Vehicle"
+import Role from "../models/Role"
 
 class UsersService{
     async create({email, password, name, cpf, biography, value, avatar}: IUserDTO){
@@ -21,8 +22,13 @@ class UsersService{
         const salt = bcrypt.genSaltSync(10)
         const hash = bcrypt.hashSync(password, salt)
 
-        const user = await User.create({email, password: hash, name, cpf, biography, value, avatar})
-        return {data: user}
+        //Por padrão um usuário é um employee
+        const role = await Role.findOne({where: {name: 'employee'}})
+
+        const user = await User.create({email, password: hash, name, cpf, biography, value, avatar, roleId: role?.getDataValue('id')})
+        const userData = await User.findOne({where: {email}, attributes: {exclude: ['password']}})
+        
+        return {data: userData}
     }
 
 
@@ -117,14 +123,14 @@ class UsersService{
     }
 
     async update(id: number, {name, email, biography, currentlyPassword, newPassword, value}: IUpdateUserDTO){
-        const emailExists = await User.findOne({where: {email}})
-
-        if(emailExists) return {error: "O email já existe no banco"}
-
+        const userExists = await User.findOne({where: {email}})
+        
         const userSearch: any = await User.findByPk(id)
+
+        if(userExists && userExists.getDataValue('email') !== userSearch.getDataValue('email')) return {error: "O email já existe no banco"}
+
         const isCorrect = bcrypt.compareSync(currentlyPassword, userSearch.password)
         
-
         if(!isCorrect) return {error: "A senha atual não corresponde com a senha passada no campo"} 
 
         const salt = bcrypt.genSaltSync(10)

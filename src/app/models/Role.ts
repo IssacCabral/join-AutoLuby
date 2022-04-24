@@ -1,37 +1,33 @@
-'use strict';
+import Sequelize from 'sequelize'
+import connection from '../../config/db_connection'
 
-module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('permissions', {
-      id: {
+const Role = connection.define('roles', {
+    id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
-      },
-      name: {
+    },
+    name: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true
-      },
-      description: {
+    },
+    description: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      createdAt: {
+    },
+    createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('NOW()'),
         field: 'createdAt'
-      },
-      updatedAt: {
+    },
+    updatedAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('NOW()'),
         field: 'updatedAt'
-      }
-    });
-  },
+    }
+})
 
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('permissions');
-  }
-};
+
+export default Role

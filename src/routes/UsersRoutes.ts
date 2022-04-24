@@ -1,13 +1,15 @@
 import { Router } from "express";
 import UsersController from "../app/controllers/UsersController";
+import auth from "../middleware/auth";
 
 const usersRouter = Router()
 
-usersRouter.post('/user', UsersController.create) // ok
-usersRouter.get('/users/:pageNumber', UsersController.findAllPaginated) // ok
-usersRouter.get('/users', UsersController.findAll) // ok
-usersRouter.get('/user/:id', UsersController.findByPk)
-usersRouter.put('/user/:id', UsersController.update)
-usersRouter.delete('/user/:id', UsersController.destroy) // ok
+//Rotas semânticas => indicar os recursos no plural
+
+usersRouter.post('/users', UsersController.create) // rota livre
+usersRouter.get('/users', auth, UsersController.findAll)
+usersRouter.get('/users/:id', auth, UsersController.findByPk)
+usersRouter.put('/users/:id', auth, UsersController.update)
+usersRouter.delete('/users/:id', auth, UsersController.destroy) 
 
 export default usersRouter

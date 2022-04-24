@@ -4,7 +4,6 @@ import vehiclesRouter from "./VehiclesRoutes";
 import usersRouter from "./UsersRoutes";
 import reservationsRouter from "./ReservationsRoutes";
 import salesRouter from "./SalesRoutes";
-import novaRouter from "./novaRota";
 
 const mainRouter = Router()
 
@@ -18,4 +17,3 @@ export default mainRouter
                     .use(usersRouter)
                     .use(reservationsRouter)
                     .use(salesRouter)
-                    .use(novaRouter)
