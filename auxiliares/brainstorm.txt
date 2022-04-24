@@ -1,50 +1,8 @@
-Rotas públicas:
---> find all vehicles
---> find all users
+Permissões específicas do admin
 
-Admin 
-- permissões sobre usuários
---> create user
---> update user
---> delete users
---> find user by pk 
---> find paginated
-
-- permissões sobre veículos
---> create vehicle
---> update vehicle
---> delete vehicle
---> find by chassis
---> find by pk
---> find paginated
---> find by status
-
-- permissões sobre vendas
---> find all
---> find by pk
-
--- permissões sobre reservas
---> find all
---> find by pk
-
-Seller
-- permissões sobre usuários
---> find paginated
---> find by pk
-
-- permissões sobre veículos
---> update vehicle
---> find by chassis
---> find by pk
---> find paginated
---> find by status
-
-- permissões sobre vendas
---> find all
---> find by pk
---> create sale
-
--- permissões sobre reservas
---> find all
---> find by pk
---> create reservation
+Admin
+    - Users
+        - deletar
+    - Vehicles
+        - criar
+        - deletar

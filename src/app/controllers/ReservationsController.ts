@@ -5,13 +5,40 @@ import Reservation from '../models/Reservation'
 class ReservationsController{
     async create(request: Request, response: Response){
         const {userId, vehicleId} = request.body
+
+        const dataMandatory = ["userId", "vehicleId"];
+
+        const erros: any[] = [];
+        dataMandatory.forEach(element => {
+            const value = request.body[element]
+            if(!value) erros.push({
+                field: element,
+                message: `O campo ${element} é obrigatório`
+            })
+        })
+
+        if(erros.length > 0) {
+            return response.status(400).json({ erros })
+        }
+
         const data = await ReservationsService.create({userId, vehicleId}) 
 
         return data["error"] ? response.status(400).json(data.error) : response.status(201).json(data.data)
     }
 
     async findAll(request: Request, response: Response){
-        const reservations = await Reservation.findAll()
+        const page = parseInt(request.query.page?.toString() ?? "1");
+        const limit = parseInt(request.query.limit?.toString() ?? "5");
+
+        if(isNaN(page) || isNaN(limit)){
+            return response.status(400).json({error: "Página ou limite inválidos!"});
+        }
+
+        if(page < 0 || limit < 0){ 
+            return response.status(400).json({error: "Página ou limite inválidos!"});
+        }
+
+        const reservations = await Reservation.findAll({ limit, offset: (page - 1) * limit });
 
         return response.status(200).json(reservations)
     }

@@ -8,7 +8,7 @@ import salesRouter from "./SalesRoutes";
 const mainRouter = Router()
 
 mainRouter.get('/', (request, response) => {
-    response.send('Tudo Ok na rota principal')
+    response.send('Welcome to my server')
 })
 
 export default mainRouter

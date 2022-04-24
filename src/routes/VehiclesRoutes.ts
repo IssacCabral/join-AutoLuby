@@ -4,15 +4,14 @@ import auth from "../middleware/auth";
 
 const vehiclesRouter = Router()
 
-vehiclesRouter.post('/vehicle', VehiclesController.create) // ok
-vehiclesRouter.get('/vehicles', VehiclesController.findAll) // ok 
-vehiclesRouter.get('/vehicles/:pageNumber', VehiclesController.findAllPaginated) // ok
-vehiclesRouter.get('/vehicle/:id', VehiclesController.findByPk) // ok
+vehiclesRouter.post('/vehicles', auth, VehiclesController.create) // apenas admins podem criar veículos
+vehiclesRouter.get('/vehicles', auth, VehiclesController.findAll) 
+vehiclesRouter.get('/vehicles/:id', auth, VehiclesController.findByPk) 
 
 // Filter vehicles By status
-vehiclesRouter.get('/vehicles/status/:status', VehiclesController.findByStatus) // ok
-vehiclesRouter.get('/vehicles/chassis/:chassisNumber', VehiclesController.findByChassis) // ok
-vehiclesRouter.put('/vehicle/:id', VehiclesController.update) // ok
-vehiclesRouter.delete('/vehicle/:id', VehiclesController.destroy) // ok
+vehiclesRouter.get('/vehicles/status/:status', auth, VehiclesController.findByStatus) 
+vehiclesRouter.get('/vehicles/chassis/:chassisNumber', auth, VehiclesController.findByChassis)
+vehiclesRouter.put('/vehicles/:id', auth, VehiclesController.update) 
+vehiclesRouter.delete('/vehicle/:id', auth, VehiclesController.destroy) // apenas admins poderão deletar um veículo
 
 export default vehiclesRouter

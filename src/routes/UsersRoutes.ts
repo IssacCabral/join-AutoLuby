@@ -10,6 +10,6 @@ usersRouter.post('/users', UsersController.create) // rota livre
 usersRouter.get('/users', auth, UsersController.findAll)
 usersRouter.get('/users/:id', auth, UsersController.findByPk)
 usersRouter.put('/users/:id', auth, UsersController.update)
-usersRouter.delete('/users/:id', auth, UsersController.destroy) 
+usersRouter.delete('/users/:id', auth, UsersController.destroy) // apenas admin poderá excluir
 
 export default usersRouter

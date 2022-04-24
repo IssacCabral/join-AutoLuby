@@ -26,7 +26,7 @@ class UsersController{
         return data["error"] ? response.status(400).json(data.error) : response.status(201).json(data.data)
     }
 
-    //http://localhost:3333/users?page=1&limit=1
+    //http://localhost:3000/users?page=1&limit=1
     async findAll(request: Request, response: Response){
         
         const page = parseInt(request.query.page?.toString() ?? "1")
