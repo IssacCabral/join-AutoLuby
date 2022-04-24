@@ -12,6 +12,6 @@ vehiclesRouter.get('/vehicles/:id', auth, VehiclesController.findByPk)
 vehiclesRouter.get('/vehicles/status/:status', auth, VehiclesController.findByStatus) 
 vehiclesRouter.get('/vehicles/chassis/:chassisNumber', auth, VehiclesController.findByChassis)
 vehiclesRouter.put('/vehicles/:id', auth, VehiclesController.update) 
-vehiclesRouter.delete('/vehicle/:id', auth, VehiclesController.destroy) // apenas admins poderão deletar um veículo
+vehiclesRouter.delete('/vehicles/:id', auth, VehiclesController.destroy) // apenas admins poderão deletar um veículo
 
 export default vehiclesRouter

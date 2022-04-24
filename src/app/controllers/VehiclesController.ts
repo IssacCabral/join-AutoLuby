@@ -1,6 +1,7 @@
 import {Request, Response} from 'express'
 import VehiclesService from '../services/VehiclesService';
 import Vehicle from '../models/Vehicle';
+import {formatDate} from '../../util/format-date'
 
 class VehiclesController{
     async create(request: Request, response: Response){
@@ -46,10 +47,14 @@ class VehiclesController{
             return response.status(400).json({error: "Parâmetros inválidos"});
         }
 
-        const vehicles = await Vehicle.findAll({ 
+        const vehicles = (await Vehicle.findAll({ 
             limit, 
             offset: (page - 1) * limit
-        })
+        })).map((v) => v.toJSON()).map((v) => ({
+            ...v,
+            createdAt: formatDate(new Date(v.createdAt)),
+            updatedAt: formatDate(new Date(v.updatedAt))
+        }))
         return response.json(vehicles)
     }
 

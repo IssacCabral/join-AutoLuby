@@ -2,6 +2,7 @@ DB_NAME=database_name
 DB_USER=username
 DB_PASSWORD=password
 DB_HOST=host
+DB_DIALECT=dialect
 DB_PORT=port
 SERVER_PORT=port
 SECRET=key

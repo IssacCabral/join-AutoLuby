@@ -1,88 +1,271 @@
-# AutoLuby
+# AutoLuby Teste
 
-### Descrição da prova:
+## Tecnologias utilizadas
+- NodeJs
+- Express
+- Sequelize
+- PostgreSQL
+- Typescript
 
-1. Esta prova consiste na criação de um sistema para gerenciamento de uma loja que realiza venda de veículos.
-2. Todos os campos que não estão marcados com **(OPCIONAL)** são obrigatórios.
-3. As colunas que descrevemos para os cruds poderão ser modificadas, de acordo com o que o desenvolvedor acredita ser a melhor forma de codificação. A criação de colunas e tabelas, poderão ser incluídas também, de acordo com o que o desenvolvedor sentir a necessidade.
+## Features adicionais
+- Migrations 
 
-### **REQUISITOS FUNCIONAIS**
 
-##### **RF01 -** CRUD de funcionários (OK)
+## Como rodar o projeto?
+- Clone o projeto
+- Instale as dependências do package.json
+- Execute as migrations 
+- Popule o banco com algumas seeds que usaremos para os testes
+- Der um run no projeto
+```bash 
+  git clone https://github.com/IssacCabral/join-AutoLuby.git
 
-- **Cadastro:**
+  npm install
 
-Descrição:O usuário deve ser único, os campos podem ser descritos como: cpf, nome, email, avatar, biografia, senha.
+  npx sequelize-cli db:migrate
 
-- **Edição:**
+  npx sequelize-cli db:seed:all
 
-Descrição: Deve ser possível editar um usuário.
+  npm run dev
+ ```
+ 
+## Diagrama lógico do banco
+<img src="./auxiliares/AutoLuby-Modelagem.png">
+<img src="./auxiliares/AutoLuby-Modelagem-Tabelas.png">
 
-- **Listagem:**
+## Autenticação
+```bash
+http://localhost:3000/auth
+```
+- Inicialmente, escolhi deixar livre a rota de criação de usuários. Todas as outras necessitamos estar autenticados
+- Para autenticar, basta realizar uma requisição para o endpoint abaixo como exemplo
+```json
+endpoints: [
+  {
+    "name": "autenticação de usuário,
+    "method": "POST",
+    "endpoint": "http://localhost:3000/auth",
+    "requestBody": {
+        "email": "chaplin@email.com",
+        "password": "123456"
+    }
+  },
+]
+```
 
-Descrição: Deve ser possível listar todos os funcionários **(Gostaríamos de ver paginado, porém, é opcional)**
+- E como resposta da autenticação, caso tudo esteja válido será devolvida a seguinte reposta:
 
-- **Visualizar:**
+```json
+{
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2hhcGxpbkBlbWFpbC5jb20iLCJyb2xlIjoiZW1wbG95ZWUiLCJpYXQiOjE2NTA4MDg2NTAsImV4cCI6MTY1MDgxMjI1MH0.7cYSIpKBPiYdqbMj0W9Bygltzpn5z55iimu6R4pXK2g"
+}
+```
 
-Descrição: Deve ser possível visualizar um único funcionário e as vendas/reservas de veículos deste.
+## Endpoints que requerem autenticação do usuário
 
-- **Remoção:**
+- Para realizar essas operações, antes de enviar a requisição, é necessário incluir o token nos headers (Bearer token);
 
-Descrição: Deve ser possível remover um funcionário.
+## Usuários
+- Nós temos dois tipos de usuários no sistema: admin e employee
+- É restrito à usuários admin:
+  - Deletar(demitir) outros usuários
+  - Criar(adquirir) veículos para o sistema
+  - Deletar veículos do sistema
+- as operações de vendas e reservas são permitidas para ambos os usuários. Porém, todos devem estar autenticados no sistema  
+- quando um novo usuário é criado, por default ele é um employee
 
-##### RF02 - Perfil de acesso (OPCIONAL)
+## CRUD de Usuários
+- Estamos logados com um user(chaplin) employee. Tentaremos acessar o endpoint de deleção de um outro user pelo id.  
 
-Descrição: sinta-se à vontade para realizar essa tarefa e use sua criatividade, você poderá utilizar perfis de acesso e atribuir funções para tipos de funcionários (administrador, vendedor).
+```json
+{
+  {
+    "name": "deleção de usuário,
+    "method": "DELETE",
+    "endpoint": "http://localhost:3000/users/3"
+  },
+}
+```
+- E como resposta para a requisição obteremos:
+```json
+{
+	"error": "Você não tem permissão para deletar usuários"
+}
+```
+- Justamente o que queremos. Agora logaremos com um usuário admin(aristóteles) para conseguir deletar o user de mesmo id
 
-##### RF03 - Autenticação
+```json
+endpoints: [
+  {
+    "name": "autenticação de usuário,
+    "method": "POST",
+    "endpoint": "http://localhost:3000/auth",
+    "requestBody": {
+        "email": "aristoteles@email.com",
+        "password": "123456"
+    }
+  },
+]
+```
+- Com um usuário admin logado, agora acessaremos a mesma rota de deleção de usuário passando o mesmo id
 
-Descrição: deve ser possível fazer a autenticação no sistema e dividir as rotas públicas das privadas
+```json
+{
+  {
+    "name": "deleção de usuário,
+    "method": "DELETE",
+    "endpoint": "http://localhost:3000/users/3"
+  },
+}
+```
 
-##### RF04 - Crud de Veículo (OK)
+- E agora obtemos como resposta:
 
-- **Adquirir veículo:**
+```json
+"Usuário removido!"
+```
 
-Descrição: o proprietário poderá adquirir veículos para sua loja. O veículo deve ser único, os campos podem ser descritos como: marca, modelo, ano, km, cor, chassi e preço de compra.
+- Abaixo segue os outros endpoints do CRUD de usuários:
 
-- **Listar veículo:**
+### Criar Usuário (CREATE)
+``` json
+endpoints: [
+  {
+    "name": "criar usuário",
+    "method": "POST",
+    "endpoint": "http://localhost:3000/users",
+    "requestBody": {
+        "email": "useremail",
+        "password": "password",
+        "name": "user name",
+        "cpf": "01010101",
+        "biography": "Lorem Ipsum",
+        "avatar": "ava",
+        "value": 1000.50
+      }
+  }, 
+```
 
-Descrição: Listagem de todos veículos.
+### Obtemos como Resposta
+``` json
+{
+	"id": 4,
+	"email": "useremail",
+	"name": "user name",
+	"cpf": "01010101",
+	"biography": "Lorem Ipsum",
+	"value": 1000.5,
+	"avatar": "ava",
+	"createdAt": "2022-04-24T15:01:48.369Z",
+	"updatedAt": "2022-04-24T15:01:48.369Z",
+	"roleId": 2
+}
+```
 
-- **Mostrar veículo:**
+### Buscar todos os usuários
 
-Descrição: Listagem de um único veículo.
+- Essa rota está paginada. Podemos utilizar query params para definir um limite de quantos usuários queremos que a rota retorne
+- Formatei as datas na forma DD/MM/yyyy
+``` bash
+http://localhost:3000/users?page=1&limit=5
+```
 
-- **Remover veículo:**
+``` json
+{
+    "name": "buscar todos os usuários",
+    "method": "GET",
+    "endpoint": "http://localhost:3000/users?page=1&limit=5",
+    "responseBody": [
+      {
+        "id": 1,
+        "email": "aristoteles@email.com",
+        "name": "Aristóteles Ferreira",
+        "cpf": "11111",
+        "biography": "Software Enginner",
+        "value": 1000000,
+        "avatar": null,
+        "createdAt": "24/04/2022",
+        "updatedAt": "24/04/2022",
+        "roleId": 1
+      },
+      {
+        "id": 2,
+        "email": "chaplin@email.com",
+        "name": "Charles Chaplin",
+        "cpf": "22222",
+        "biography": "Dev",
+        "value": 10000,
+        "avatar": null,
+        "createdAt": "24/04/2022",
+        "updatedAt": "24/04/2022",
+        "roleId": 2
+      },
+      {
+        "id": 4,
+        "email": "useremail",
+        "name": "user name",
+        "cpf": "01010101",
+        "biography": "Lorem Ipsum",
+        "value": 1000.5,
+        "avatar": "ava",
+        "createdAt": "24/04/2022",
+        "updatedAt": "24/04/2022",
+        "roleId": 2
+      }
+    ]
+}
+```
 
-Descrição: Deve ser possível remover um veículo.
+- Perceba que os dados de usuário retornados condizem com a tela de listagem de funcionários do protótipo
 
-##### RF05 - Filtrar veículos pelo status (OPCIONAL) (OK)
+<img src="./auxiliares/listagem-funcionarios.png">
 
-Descrição: você pode filtrar veículos vendidos ou disponíveis
+### Atualizar usuário (UPDATE)
 
-##### RF06 - Vender veículo (OK)
+- O email de um user é um campo único. Logo, se estamos logados com um certo user e tentarmos atualizar o email para um mesmo email de um outro user, obtemos a seguinte mensagem:
+``` json
+"O email já existe no banco"
+```
+- Neste endpoint podemos alterar a senha(passando a atual e nova), email, biografia, nome, e o salário. 
+ 
+``` json
+  {
+    "name": "atualizar usuário",
+    "method": "PUT",
+    "endpoint": "http://localhost:3000/users/:id",
+    "requestBody": {
+      "email": "aristoteles@email.com",
+	    "currentlyPassword": "123456",
+	    "newPassword": "123456",
+	    "name": "Aristóteles F.",
+	    "biography": "Uma nova biografia",
+	    "value": 100000
+    }
+  },
+```
+### Buscar usuário pelo id
+- Deve ser possível visualizar um único funcionário e as vendas/reservas de veículos deste.
+- Como ainda não cadastramos nenhuma reserva ou venda, obtemos o usuário com sales e reservations vazios.
+``` json
+{
+  "name": "buscar usuário por id",
+  "method": "GET",
+  "endpoint": "http://localhost:3000/users/:id",
+  "responseBody": [
+    {
+      "id": 1,
+      "email": "aristoteles@email.com",
+      "name": "Aristóteles Ferreira",
+      "cpf": "11111",
+      "biography": "Software Enginner",
+      "value": 1000000,
+      "avatar": null,
+      "roleId": 1,
+      "sales": [],
+      "reservations": []
+	  }
+  ]
+},
 
-Descrição: ao realizar esta ação, informações como: data, status do veículo, valor da venda e quem vendeu, devem ser armazenadas no banco.
+```
 
-##### RF07 - Reservar veículo (OK)
-
-Descrição: ao realizar esta ação, informações como: data, valor da reserva e quem vendeu, devem ser armazenadas no banco.
-
-##### RF08 - Formatar todas as datas apresentadas ao usuário (OPCIONAL)
-
-Descrição: todas as datas deverão estar no formato DD/MM/yyyy
-
-#### REQUISITOS NÃO FUNCIONAIS
-
-**RNF01 - A aplicação deverá ser feita utilizando Express com o (Sequelize) ou AdonisJs.** (OK)
-
-**RNF02 - Utilização de Migrations** (OK)
-
-**RNF03 - Utilização de Models** (OK)
-
-**RNF04 - Gostaríamos de ver a utilização de typescript (OPCIONAL)** (OK)
-
-**RNF05 - Gostaríamos que os campos necessários para os endpoints fossem validados na requisição. (OPCIONAL)**
-
-### **Atenção:** ao finalizar a prova, o candidato deverá seguir as instruções do e-mail recebido!
-#### **Atenção:** em caso de dúvidas, enviar e-mail para labluby@luby.com.br

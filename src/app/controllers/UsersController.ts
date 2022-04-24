@@ -1,6 +1,7 @@
 import {Request, Response} from 'express' 
 import UsersService from '../services/UsersService'
 import User from '../models/User'
+import {formatDate} from '../../util/format-date'
 
 class UsersController{
     async create(request: Request, response: Response){
@@ -40,13 +41,17 @@ class UsersController{
             return response.status(400).json({error: "Página ou limite inválidos"})
         }
 
-        const users = await User.findAll({
+        const users = (await User.findAll({
             attributes: {
                 exclude: ['password']
             },
             limit,
-            offset: (page - 1) * limit
-        })
+            offset: (page - 1) * limit,
+        })).map((v) => v.toJSON()).map((v) => ({
+            ...v,
+            createdAt: formatDate(new Date(v.createdAt)),
+            updatedAt: formatDate(new Date(v.updatedAt)),
+        }))
         return response.json(users) 
     }
 

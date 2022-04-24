@@ -1,6 +1,7 @@
 import {Request, Response} from 'express' 
 import ReservationsService from '../services/ReservationsService'
 import Reservation from '../models/Reservation'
+import {formatDate} from '../../util/format-date'
 
 class ReservationsController{
     async create(request: Request, response: Response){
@@ -38,7 +39,15 @@ class ReservationsController{
             return response.status(400).json({error: "Página ou limite inválidos!"});
         }
 
-        const reservations = await Reservation.findAll({ limit, offset: (page - 1) * limit });
+        //const reservations = await Reservation.findAll({ limit, offset: (page - 1) * limit });
+
+        const reservations = (await Reservation.findAll({ 
+            limit, 
+            offset: (page - 1) * limit
+        })).map((v) => v.toJSON()).map((v) => ({
+            ...v,
+            reservationDate: formatDate(new Date(v.reservationDate)),
+        }))
 
         return response.status(200).json(reservations)
     }

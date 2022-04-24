@@ -1,6 +1,7 @@
 import {Request, Response} from 'express'
 import SalesService from '../services/SalesService'
 import Sale from '../models/Sale'
+import {formatDate} from '../../util/format-date'
 
 class SalesController{
     async create(request: Request, response: Response){
@@ -38,7 +39,15 @@ class SalesController{
             return response.status(400).json({error: "Página ou limite inválidos!"});
         }
 
-        const sales = await Sale.findAll({ limit, offset: (page - 1) * limit });
+        //const sales = await Sale.findAll({ limit, offset: (page - 1) * limit });
+
+        const sales = (await Sale.findAll({ 
+            limit, 
+            offset: (page - 1) * limit
+        })).map((v) => v.toJSON()).map((v) => ({
+            ...v,
+            saleDate: formatDate(new Date(v.saleDate)),
+        }))
 
         return response.status(200).json(sales)
     }
